@@ -1,0 +1,39 @@
+from zipline.api import order, record, symbol
+from zipline.algorithm import TradingAlgorithm
+from zipline.data import bundles
+from zipline.utils.calendars import get_calendar
+
+
+# Load data bundle
+bundle = bundles.load('nse-fno')
+
+# Define trading parameters
+stock = 'NIFTY'
+option_ce = 'NIFTYCE'
+option_pe = 'NIFTYPE'
+start_date = '2020-01-01'
+end_date = '2022-12-31'
+initial_capital = 100000
+
+
+def initialize(context):
+    context.stock = stock
+    context.option_ce = option_ce
+    context.option_pe = option_pe
+
+
+def handle_data(context, data):
+    # Your strategy logic here
+
+
+# Create algorithm
+algo = TradingAlgorithm(initialize=initialize, handle_data=handle_data)
+
+
+# Run backtest
+backtest = algo.run(start=start_date, end=end_date, bundle=bundle,
+                    capital_base=initial_capital, data_frequency='daily')
+
+
+# Evaluate performance
+print(backtest.perf_metrics)
